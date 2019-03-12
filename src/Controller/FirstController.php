@@ -9,7 +9,22 @@
 namespace App\Controller;
 
 
-class FirstController
+use App\Form\ContactType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class FirstController extends AbstractController
 {
+    /**
+     * @Route("/")
+     */
+
+    public function contactcontroller()
+    {
+
+        $form=$this->createForm(ContactType::class)
+        $this->render('');
+    }
+
 
 }
