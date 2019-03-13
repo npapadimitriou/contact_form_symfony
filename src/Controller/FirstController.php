@@ -19,13 +19,31 @@ class FirstController extends AbstractController
      * @Route("/")
      */
 
-    public function contactcontroller()
+    public function contactcontroller(\Swift_Mailer $mailer)
     {
 
-        $form=$this->createForm(ContactType::class)
-        $this->render('Contact/conform.html.twig',[
-            'our_form' => $form->createView(),
-        ])
+        $form=$this->createForm(ContactType::class);
+
+        $contactFormData=$form->getData();
+
+
+
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom($contactFormData['email'])
+            ->setTo('npapadimitriou1507@hotmail.com')
+            ->setBody(
+                $contactFormData['message'],'text/plain'
+
+            );
+
+        $mailer->send($message);
+
+  return $this->render('Contact/contform.html.twig',[
+      'our_form' => $form->createView(),
+  ]);
+
+
+
     }
 
 
