@@ -23,7 +23,9 @@ class FirstController extends AbstractController
     {
 
         $form=$this->createForm(ContactType::class)
-        $this->render('');
+        $this->render('Contact/conform.html.twig',[
+            'our_form' => $form->createView(),
+        ])
     }
 
 
