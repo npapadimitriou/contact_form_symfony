@@ -28,11 +28,12 @@ class FirstController extends AbstractController
 
 
 
+
         $message = (new \Swift_Message('Hello Email'))
-            ->setFrom($contactFormData['email'])
+            ->setFrom('npapadimitriou1507@gmail.com')
             ->setTo('npapadimitriou1507@hotmail.com')
             ->setBody(
-                $contactFormData['message'],'text/plain'
+                $contactFormData['messages']
 
             );
 
