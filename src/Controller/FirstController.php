@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\DepartmentEmail;
 use App\Entity\Usercredentials;
 use App\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,8 +25,8 @@ class FirstController extends AbstractController
     public function contactcontroller(Request $request,\Swift_Mailer $mailer)
     {
 
-        $depar=new DepartmentController();
-        $depar->generateEmail();
+        //$depar=new DepartmentController();
+       // $depar->generateEmail();
 
         $form=$this->createForm(ContactType::class);
 
@@ -43,6 +44,12 @@ class FirstController extends AbstractController
 
             $sn = $this->getDoctrine()->getManager();
             $sn -> persist($contact);
+            $sn -> flush();
+
+            $department=new DepartmentEmail();
+            $department->setEmail("npapadimitriou1507@hotmail.com");
+            $department->setNameDepartment("Direction");
+            $sn -> persist($department);
             $sn -> flush();
 
 

@@ -18,9 +18,10 @@ class DepartmentController extends AbstractController
     public function  generateEmail()
     {
 
-    $department=new DepartmentEmail();
+
     $sn = $this->getDoctrine()->getManager();
 
+    $department=new DepartmentEmail();
     $department->setEmail("npapadimitriou1507@hotmail.com");
     $department->setNameDepartment("Direction");
     $sn -> persist($department);
