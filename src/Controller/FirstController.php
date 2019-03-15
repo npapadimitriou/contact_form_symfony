@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 class FirstController extends AbstractController
 {
     /**
-     * @Route("/",name="local")
+     * @Route("/contact",name="contact")
      */
 
     public function contactcontroller(Request $request,\Swift_Mailer $mailer)
@@ -46,11 +46,7 @@ class FirstController extends AbstractController
             $sn -> persist($contact);
             $sn -> flush();
 
-            $department=new DepartmentEmail();
-            $department->setEmail("npapadimitriou1507@hotmail.com");
-            $department->setNameDepartment("Direction");
-            $sn -> persist($department);
-            $sn -> flush();
+
 
 
             $message = (new \Swift_Message('New user added'))
@@ -63,7 +59,7 @@ class FirstController extends AbstractController
 
 
             $mailer->send($message);
-            return $this->redirectToRoute('local');
+            return $this->redirectToRoute('contact');
 
                   }
 

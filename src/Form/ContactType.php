@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\DepartmentEmail;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,6 +20,10 @@ class ContactType extends AbstractType
             ->add('prenom',TextType::class)
             ->add('email',EmailType::class)
             ->add('message',TextareaType::class)
+            ->add('Department', EntityType::class,[
+                'class' => DepartmentEmail::class,
+                'NameDepartment'=>'depart'
+    ])
         ;
     }
 
