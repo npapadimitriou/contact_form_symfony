@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,16 @@ class DepartmentEmail
      * @ORM\Column(type="string", length=100)
      */
     private $Email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Usercredentials", mappedBy="department")
+     */
+    private $usercredentials;
+
+    public function __construct()
+    {
+        $this->usercredentials = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +63,37 @@ class DepartmentEmail
     public function setEmail(string $Email): self
     {
         $this->Email = $Email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Usercredentials[]
+     */
+    public function getUsercredentials(): Collection
+    {
+        return $this->usercredentials;
+    }
+
+    public function addUsercredential(Usercredentials $usercredential): self
+    {
+        if (!$this->usercredentials->contains($usercredential)) {
+            $this->usercredentials[] = $usercredential;
+            $usercredential->setDepartment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsercredential(Usercredentials $usercredential): self
+    {
+        if ($this->usercredentials->contains($usercredential)) {
+            $this->usercredentials->removeElement($usercredential);
+            // set the owning side to null (unless already changed)
+            if ($usercredential->getDepartment() === $this) {
+                $usercredential->setDepartment(null);
+            }
+        }
 
         return $this;
     }

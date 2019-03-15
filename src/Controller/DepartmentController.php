@@ -17,7 +17,7 @@ class DepartmentController extends AbstractController
 {
 
     /**
-     * @Route("/", name="local")
+     * @Route("/asas", name="local")
      */
     public function  generateEmail()
     {

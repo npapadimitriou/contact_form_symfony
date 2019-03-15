@@ -36,6 +36,12 @@ class Usercredentials
      */
     private $Message;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DepartmentEmail", inversedBy="usercredentials")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $department;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +91,18 @@ class Usercredentials
     public function setMessage(string $Message): self
     {
         $this->Message = $Message;
+
+        return $this;
+    }
+
+    public function getDepartment(): ?DepartmentEmail
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(?DepartmentEmail $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }

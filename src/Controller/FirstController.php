@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 class FirstController extends AbstractController
 {
     /**
-     * @Route("/contact",name="contact")
+     * @Route("/",name="contact")
      */
 
     public function contactcontroller(Request $request,\Swift_Mailer $mailer)
