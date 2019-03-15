@@ -47,11 +47,18 @@ class FirstController extends AbstractController
             $sn -> flush();
 
 
+            $repository = $this->getDoctrine()->getRepository(DepartmentEmail::class);
+
+            $queredDepartment = $repository->findOneBy(['NameDepartment' => $contactFormData['Department']]);
+
+
+
+            dump($queredDepartment['email']);
 
 
             $message = (new \Swift_Message('New user added'))
                 ->setFrom('npapadimitriou1507@gmail.com')
-                ->setTo('npapadimitriou1507@hotmail.com')
+                ->setTo($queredDepartment['email'])
                 ->setBody(
                     $this->render('email/newUserEmail.html.twig',array('name'=>$contactFormData['prenom'],
                         'surname'=>$contactFormData['nom'],'emailAddress'=>$contactFormData['email'],
@@ -61,8 +68,8 @@ class FirstController extends AbstractController
             $mailer->send($message);
             return $this->redirectToRoute('contact');
 
-                  }
 
+        }
 /*
 
 */

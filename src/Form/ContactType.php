@@ -22,7 +22,7 @@ class ContactType extends AbstractType
             ->add('message',TextareaType::class)
             ->add('Department', EntityType::class,[
                 'class' => DepartmentEmail::class,
-                'NameDepartment'=>'depart'
+                'choice_label'=>'NameDepartment'
     ])
         ;
     }
