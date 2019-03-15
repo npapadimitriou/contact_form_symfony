@@ -51,14 +51,17 @@ class FirstController extends AbstractController
 
             $queredDepartment = $repository->findOneBy(['NameDepartment' => $contactFormData['Department']]);
 
-
-
-            dump($queredDepartment['email']);
+            //$test=5;
+            dump($contactFormData['Department']->getEmail());
+            //dump($queredDepartment);
+            //dump($queredDepartment->getEmail());
+            //$receiver=$queredDepartment->getEmail();
+            //dump($test);
 
 
             $message = (new \Swift_Message('New user added'))
                 ->setFrom('npapadimitriou1507@gmail.com')
-                ->setTo($queredDepartment['email'])
+                ->setTo( $contactFormData['Department']->getEmail())
                 ->setBody(
                     $this->render('email/newUserEmail.html.twig',array('name'=>$contactFormData['prenom'],
                         'surname'=>$contactFormData['nom'],'emailAddress'=>$contactFormData['email'],

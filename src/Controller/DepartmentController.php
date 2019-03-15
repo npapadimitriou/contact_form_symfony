@@ -45,7 +45,7 @@ class DepartmentController extends AbstractController
         $department->setNameDepartment("RH");
 
         $queredDepartment = $repository->findOneBy(['NameDepartment' => $department->getNameDepartment()]);
-        dump($queredDepartment);
+       // dump($queredDepartment);
         if (!$queredDepartment) {
             $sn->persist($department);
             $sn->flush();
