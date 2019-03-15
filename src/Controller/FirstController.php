@@ -25,10 +25,8 @@ class FirstController extends AbstractController
     public function contactcontroller(Request $request,\Swift_Mailer $mailer)
     {
 
-        //$depar=new DepartmentController();
-       // $depar->generateEmail();
 
-        $form=$this->createForm(ContactType::class);
+        $form = $this->createForm(ContactType::class);
 
         $form->handleRequest($request);
 
@@ -36,53 +34,46 @@ class FirstController extends AbstractController
 
             $contactFormData = $form->getData();
 
-            $contact=new Usercredentials();
+            $contact = new Usercredentials();
             $contact->setEmail($contactFormData['email']);
             $contact->setName($contactFormData['prenom']);
             $contact->setSurname($contactFormData['nom']);
             $contact->setMessage($contactFormData['message']);
+            $contact->setDepartment($contactFormData['Department']);
 
             $sn = $this->getDoctrine()->getManager();
-            $sn -> persist($contact);
-            $sn -> flush();
+            $sn->persist($contact);
+            $sn->flush();
 
-
+            dump($contact->getDepartment()->getEmail());
             $repository = $this->getDoctrine()->getRepository(DepartmentEmail::class);
 
-            $queredDepartment = $repository->findOneBy(['NameDepartment' => $contactFormData['Department']]);
-
-            //$test=5;
-            dump($contactFormData['Department']->getEmail());
-            //dump($queredDepartment);
-            //dump($queredDepartment->getEmail());
-            //$receiver=$queredDepartment->getEmail();
-            //dump($test);
 
 
-            $message = (new \Swift_Message('New user added'))
-                ->setFrom('npapadimitriou1507@gmail.com')
-                ->setTo( $contactFormData['Department']->getEmail())
-                ->setBody(
-                    $this->render('email/newUserEmail.html.twig',array('name'=>$contactFormData['prenom'],
-                        'surname'=>$contactFormData['nom'],'emailAddress'=>$contactFormData['email'],
-                        'message'=>$contactFormData['message'])),'text/plain');
-
-
-            $mailer->send($message);
+            $this->sendemail($contact,$mailer);
             return $this->redirectToRoute('contact');
-
-
         }
-/*
 
-*/
-  return $this->render('Contact/contform.html.twig',[
-      'our_form' => $form->createView(),
-  ]);
-
+        return $this->render('Contact/contform.html.twig', [
+            'our_form' => $form->createView(),
+        ]);
 
 
     }
 
 
+    function sendemail($contact, $mailer)
+    {
+
+        $message = (new \Swift_Message('New user added'))
+            ->setFrom('npapadimitriou1507@gmail.com')
+            ->setTo($contact->getDepartment()->getEmail())
+            ->setBody(
+                $this->render('email/newUserEmail.html.twig', array('name' =>$contact->getName(),
+                    'surname' => $contact->getSurname(), 'emailAddress' => $contact->getEmail(),
+                    'message' => $contact->getMessage())), 'text/plain');
+
+        $mailer->send($message);
+
+    }
 }
