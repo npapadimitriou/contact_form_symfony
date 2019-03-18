@@ -9,8 +9,6 @@
 namespace App\Controller;
 
 
-use App\Entity\DepartmentEmail;
-use App\Entity\Usercredentials;
 use App\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,35 +20,19 @@ class FirstController extends AbstractController
      * @Route("/",name="contact")
      */
 
-    public function contactcontroller(Request $request,\Swift_Mailer $mailer)
+    public function contactcontroller(Request $request, \Swift_Mailer $mailer)
     {
 
-
         $form = $this->createForm(ContactType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $contactFormData = $form->getData();
-
-            $contact = new Usercredentials();
-            $contact->setEmail($contactFormData['email']);
-            $contact->setName($contactFormData['prenom']);
-            $contact->setSurname($contactFormData['nom']);
-            $contact->setMessage($contactFormData['message']);
-            $contact->setDepartment($contactFormData['Department']);
-
             $sn = $this->getDoctrine()->getManager();
-            $sn->persist($contact);
+            $sn->persist($contactFormData);
             $sn->flush();
-
-            dump($contact->getDepartment()->getEmail());
-            $repository = $this->getDoctrine()->getRepository(DepartmentEmail::class);
-
-
-
-            $this->sendemail($contact,$mailer);
+            $this->sendemail($contactFormData, $mailer);
             return $this->redirectToRoute('contact');
         }
 
@@ -62,16 +44,16 @@ class FirstController extends AbstractController
     }
 
 
-    function sendemail($contact, $mailer)
+    function sendemail($contactFormData, $mailer)
     {
 
         $message = (new \Swift_Message('New user added'))
             ->setFrom('npapadimitriou1507@gmail.com')
-            ->setTo($contact->getDepartment()->getEmail())
+            ->setTo($contactFormData->getDepartment()->getEmail())
             ->setBody(
-                $this->render('email/newUserEmail.html.twig', array('name' =>$contact->getName(),
-                    'surname' => $contact->getSurname(), 'emailAddress' => $contact->getEmail(),
-                    'message' => $contact->getMessage())), 'text/plain');
+                $this->render('email/newUserEmail.html.twig', array('name' => $contactFormData->getName(),
+                    'surname' => $contactFormData->getSurname(), 'emailAddress' => $contactFormData->getEmail(),
+                    'message' => $contactFormData->getMessage())), 'text/plain');
 
         $mailer->send($message);
 

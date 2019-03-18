@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\DepartmentEmail;
+use App\Entity\Usercredentials;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -16,21 +17,21 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-           ->add('nom',TextType::class)
-            ->add('prenom',TextType::class)
-            ->add('email',EmailType::class)
-            ->add('message',TextareaType::class)
+           ->add('Name',TextType::class)
+            ->add('Surname',TextType::class)
+            ->add('Email',EmailType::class)
+            ->add('Message',TextareaType::class)
             ->add('Department', EntityType::class,[
                 'class' => DepartmentEmail::class,
                 'choice_label'=>'NameDepartment'
-    ])
-        ;
+    ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class'=>Usercredentials::class
         ]);
     }
 }
